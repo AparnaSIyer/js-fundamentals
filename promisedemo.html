@@ -1,0 +1,101 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+  </head>
+  <body>
+    <p>This is my page</p>
+  </body>
+  <script>
+    //let promise = fetch('https://picsum.photos/200/300');
+    //let promise2 = promise.then(response => {
+    //    if (!response.ok) {
+    //      throw new Error(`HTTP error! status: ${response.status}`);
+    //    } else {
+    //      return response.blob();
+    //    }
+    //  });
+    //let promise3 = promise2.then(myBlob => {
+    //    let objectURL = URL.createObjectURL(myBlob);
+    //    let image = document.createElement('img');
+    //    image.src = objectURL;
+    //    document.body.appendChild(image);
+    //})
+    //let errorCase = promise3.catch(e => {
+    //    console.log('There has been a problem with your fetch operation: ' + e.message);
+    //  });
+
+    fetch('https://picsum.photos/200/300').then(response=>{
+        if(!response.ok){
+            throw new Error(`Error status ${response.status}`);
+        }
+        else{
+            return response.blob();
+        }
+    }).then(myBlob=>{
+        let objectUrl=URL.createObjectURL(myBlob);
+        let img=document.createElement('img');
+        img.src=objectUrl;
+        document.body.appendChild(img);
+    }).catch(e=>{
+        console.log('There has been a problem with your fetch operation: ' + e.message);
+    })
+      
+  </script>
+</html>
+https://picsum.photos/200/300 -->
+
+<!-- promise all -->
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>My test page</title>
+  </head>
+  <body>
+    <p>This is my page</p>
+  </body>
+  <script>
+      let a=fetchAndDecode('https://picsum.photos/seed/picsum/200/300','blob');
+      let b=fetchAndDecode('https://picsum.photos/200','blob');
+      let c=fetchAndDecode('https://picsum.photos/200/300','blob');
+      Promise.all([a,b,c]).then()
+      
+      function fetchAndDecode(url, type) {
+        return fetch(url).then(response => {
+          if(!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          } else {
+            if(type === 'blob') {
+              return response.blob();
+            } 
+          }
+        })
+        .catch(e => {
+          console.log(`There has been a problem with your fetch operation for resource "${url}": ` + e.message);
+        });
+      }
+
+      Promise.all([a, b, c]).then(values => {
+        console.log(values);
+        // Store each value returned from the promises in separate variables; create object URLs from the blobs
+        let objectURL1 = URL.createObjectURL(values[0]);
+        let objectURL2 = URL.createObjectURL(values[1]);
+        let objectURL3 = URL.createObjectURL(values[2]);
+        
+        // Display the images in <img> elements
+        let image1 = document.createElement('img');
+        let image2 = document.createElement('img');
+        let image3 = document.createElement('img');
+        image1.src = objectURL1;
+        image2.src = objectURL2;
+        image3.src = objectURL3;
+        document.body.appendChild(image1);
+        document.body.appendChild(image2);
+        document.body.appendChild(image3);
+
+    });
+  </script>
+</html>

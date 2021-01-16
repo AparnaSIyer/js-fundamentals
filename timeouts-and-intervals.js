@@ -36,3 +36,12 @@ btnCancel.addEventListener('click', () => {
     console.log('Cancelled timeout');
     btnCancel.disabled = true;
 });
+
+// recursive timeouts
+let i = 1;
+
+setTimeout(function run() {
+    console.log(i);
+    i++;
+    setTimeout(run, 0);
+}, 0);
